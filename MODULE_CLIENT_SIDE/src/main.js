@@ -31,17 +31,10 @@ loadSpriteAtlas("sprites/PeaShooter/spritesheet.png", {
 	},
 })
 
-const shootPea = (x, y) => {
-	[
-		pos(x, y),
-		move(RIGHT, 40),
-		color(GREEN)
-	]
-}
-
 const GAME_WIDTH = 1024
 const GAME_HEIGHT = 1024
 const LANE_WIDTH = 650
+const LANE_HEIGHT = 125
 const MARGIN = 16
 const PLANT_SLOTS = 8
 
@@ -57,8 +50,6 @@ add([
 const lane1 = add([
 	'lane1',
 	pos(100, 125),
-	color("#202020"),
-	z(-2)
 ])
 
 const lane1Zombie = add([
@@ -77,7 +68,7 @@ lane1Zombie.on("death", () => {
 	destroy(lane1Zombie)
 })
 
-const lane1pea = add([
+const lane1PeaShooter = add([
 	'peaShooter',
 	pos(lane1.pos.x, lane1.pos.y),
 	scale(1.1),
@@ -86,19 +77,25 @@ const lane1pea = add([
 	z(2)
 ])
 
-add([
-	'pea',
-	pos(lane1pea.pos.x + 20, lane1pea.pos.y + 20),
-	circle(10, 10),
-	color(GREEN),
-	move(RIGHT, 80),
-	offscreen({ destroy: true }),
-	area(),
-	z(1)
-])
+const shootPea = (peaShooter) => {
+	add([
+		'pea',
+		pos(peaShooter.pos.x + 20, peaShooter.pos.y + 20),
+		circle(10, 10),
+		color(GREEN),
+		move(RIGHT, 80),
+		offscreen({ destroy: true }),
+		area(),
+		z(1)
+	])
+}
+
+loop(1, () => {
+	shootPea(lane1PeaShooter)
+})
 
 loop(4, () => {
-	lane1pea.play("idle")
+	lane1PeaShooter.play("idle")
 	lane1Zombie.play("walk")
 })
 
