@@ -13,15 +13,37 @@ loadSpriteAtlas("sprites/Zombie/spritesheet.png", {
 		height: 90,
 		sliceX: 34,
 		anims: {
-			walk: { from: 0, to: 32 },
+			walk: { from: 0, to: 33 },
 		},
 	},
 })
+
+loadSpriteAtlas("sprites/PeaShooter/spritesheet.png", {
+	"pea": {
+		x: 0,
+		y: 0,
+		width: 2048,
+		height: 71,
+		sliceX: 31,
+		anims: {
+			idle: { from: 0, to: 30 },
+		},
+	},
+})
+
+const shootPea = (x, y) => {
+	[
+		pos(x, y),
+		move(RIGHT, 40),
+		color(GREEN)
+	]
+}
 
 const GAME_WIDTH = 1024
 const GAME_HEIGHT = 1024
 const LANE_WIDTH = 650
 const MARGIN = 16
+const PLANT_SLOTS = 8
 
 // Add background
 add([
@@ -40,10 +62,48 @@ const lane1 = add([
 ])
 
 const lane1Zombie = add([
+	'zombie',
+	health(5),
 	pos(LANE_WIDTH, lane1.pos.y - 20),
 	// scale(.75),
 	sprite("zombie"),
-	move(LEFT, 10)
+	move(LEFT, 12),
+	area(),
+	z(1)
 ])
 
-lane1Zombie.play("walk")
+// triggers when hp reaches 0
+lane1Zombie.on("death", () => {
+	destroy(lane1Zombie)
+})
+
+const lane1pea = add([
+	'peaShooter',
+	pos(lane1.pos.x, lane1.pos.y),
+	scale(1.1),
+	sprite("pea"),
+	area(),
+	z(2)
+])
+
+add([
+	'pea',
+	pos(lane1pea.pos.x + 20, lane1pea.pos.y + 20),
+	circle(10, 10),
+	color(GREEN),
+	move(RIGHT, 80),
+	offscreen({ destroy: true }),
+	area(),
+	z(1)
+])
+
+loop(4, () => {
+	lane1pea.play("idle")
+	lane1Zombie.play("walk")
+})
+
+onCollideUpdate('zombie', 'pea', (zombie, pea) => {
+	zombie.hurt(1)
+	destroy(pea)
+	console.log("hit")
+})
