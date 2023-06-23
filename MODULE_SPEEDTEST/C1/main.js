@@ -2,9 +2,10 @@ window.onload = function () {
   // Dekalasi variabel dan elemen canvas
   const canvas = document.getElementById("canvas")
   const ctx = canvas.getContext('2d')
+
+  // Deklarasi konstanta yang digunakan
   const CANVAS_WIDTH = (canvas.width = 400)
   const CANVAS_HEIGHT = (canvas.height = 320)
-
   const CIRCLE_SIZE = 15
   let x = CIRCLE_SIZE
 
@@ -18,5 +19,7 @@ window.onload = function () {
     x++
     requestAnimationFrame(animate)
   }
+
+  // Mulai looping fungsi animate
   animate()
 }

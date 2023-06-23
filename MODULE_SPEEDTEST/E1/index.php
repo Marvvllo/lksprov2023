@@ -1,17 +1,17 @@
 <?php
 function xmlToJson($xmlString)
 {
-  // Load the XML string
+  // Memuat string XML
   $xml = simplexml_load_string($xmlString);
 
-  // Convert the XML object to an associative array
+  // Konversi XML ke JSON lalu ke array PHP
   $json = json_encode($xml);
   $array = json_decode($json, true);
 
   return $array;
 }
 
-// Check if XML data is submitted
+// Periksa jika sudah submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['xmlData'])) {
   $xmlString = $_POST['xmlData'];
   $jsonArray = xmlToJson($xmlString);

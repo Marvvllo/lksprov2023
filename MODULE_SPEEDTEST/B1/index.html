@@ -7,54 +7,8 @@
       content="width=device-width, initial-scale=1.0"
     />
     <title>B1. Loading Animation</title>
+    <link rel="stylesheet" href="./style.css" />
   </head>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      background-color: #202020;
-      display: grid;
-      place-items: center;
-    }
-
-    .loading {
-      display: flex;
-      flex-direction: row;
-      gap: 0.25rem;
-    }
-
-    .loading__line {
-      width: 0.5rem;
-      height: 3rem;
-      background-color: #1a8ab8;
-    }
-
-    [a] {
-      animation: loading 1000ms infinite linear;
-    }
-    [b] {
-      animation: loading 1000ms 250ms infinite linear;
-    }
-    [c] {
-      animation: loading 1000ms 500ms infinite linear;
-    }
-    [d] {
-      animation: loading 1000ms 750ms infinite linear;
-    }
-
-    @keyframes loading {
-      0% {
-        transform: scaleY(1);
-      }
-      50% {
-        transform: scaleY(1.25);
-      }
-      100% {
-        transform: scaleY(1);
-      }
-    }
-  </style>
   <body>
     <div class="loading">
       <div class="loading__line" a></div>

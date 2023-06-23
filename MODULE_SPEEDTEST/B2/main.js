@@ -29,8 +29,7 @@ window.onload = function () {
     appendSeconds.innerHTML = seconds;
   }
 
-
-
+  // Fungsi yang dilaksakan untuk menghitung setiap 10ms
   function startTimer() {
     tens++;
 

@@ -1,34 +1,33 @@
 <?php
+// Deteksi jika sudah submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $imagePath = $_FILES['image']['tmp_name'];
   $logoPath = $_FILES['logo']['tmp_name'];
 
-  // Check if both image and logo are uploaded
+  // Periksa jika kedua gambar sudah submit
   if (!empty($imagePath) && !empty($logoPath)) {
-    // Load the main image
+    // Memuat kedua gambar
     $image = imagecreatefromstring(file_get_contents($imagePath));
-
-    // Load the logo image
     $logo = imagecreatefromstring(file_get_contents($logoPath));
 
-    // Get the dimensions of the logo image
+    // Mendapatkan dimensi gambar logo
     $logoWidth = imagesx($logo);
     $logoHeight = imagesy($logo);
 
-    // Calculate the position to place the logo on the main image (bottom-right corner)
+    // Kalkulasi posisi logo (pojok kanan bawah)
     $imageWidth = imagesx($image);
     $imageHeight = imagesy($image);
-    $logoPositionX = $imageWidth - $logoWidth - 10; // Adjust the position as needed
-    $logoPositionY = $imageHeight - $logoHeight - 10; // Adjust the position as needed
+    $logoPositionX = $imageWidth - $logoWidth - 10; // Menyesuaikan margin
+    $logoPositionY = $imageHeight - $logoHeight - 10; // Menyesuaikan margin
 
-    // Apply the logo as a watermark on the main image
+    // Taruh logo di atas image
     imagecopy($image, $logo, $logoPositionX, $logoPositionY, 0, 0, $logoWidth, $logoHeight);
 
-    // Output the final image to a file or browser
+    // Keluarkan hasil
     header('Content-Type: image/jpeg');
     imagejpeg($image, null, 90);
 
-    // Clean up memory
+    // Kosongkan penyimpanan
     imagedestroy($image);
     imagedestroy($logo);
   }

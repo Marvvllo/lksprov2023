@@ -10,11 +10,6 @@
 
 <body>
     <?php
-    $arrayBulan = [
-        "January", "February", "March", "April", "May", "June", "July",
-        "August", "September", "October", "November", "December"
-    ];
-
     // Menghitung kalender dari tanggal
     if (!empty($_GET['bulan'])) {
         $bulan = $_GET['bulan'];
@@ -33,6 +28,7 @@
         $tahun = date('Y');
     }
 
+    // Mencari variabel yang akan digunakan berdasarkan tanggal yang dipilih
     $jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
     $jd = gregoriantojd($bulan, 1, $tahun);
     $namaBulan = jdmonthname($jd, 1);
@@ -50,6 +46,7 @@
         array_push($arrayHari, $i);
     }
 
+    // Pisah array hari menjadi 7 hari
     $arrayMinggu = array_chunk($arrayHari, 7, true);
 
     ?>

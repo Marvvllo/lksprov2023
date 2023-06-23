@@ -1,0 +1,49 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: #202020;
+  display: grid;
+  place-items: center;
+}
+
+/* Styling untuk container loading */
+.loading {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+}
+
+/* Styling untuk semua garis */
+.loading__line {
+  width: 0.5rem;
+  height: 3rem;
+  background-color: #1a8ab8;
+}
+
+/* Berikan animasi untuk setiap garis */
+[a] {
+  animation: loading 1000ms infinite linear;
+}
+[b] {
+  animation: loading 1000ms 250ms infinite linear;
+}
+[c] {
+  animation: loading 1000ms 500ms infinite linear;
+}
+[d] {
+  animation: loading 1000ms 750ms infinite linear;
+}
+
+/* Definisi animasi loading */
+@keyframes loading {
+  0% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.25);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
