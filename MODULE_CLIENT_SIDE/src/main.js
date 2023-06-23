@@ -35,10 +35,12 @@ loadSpriteAtlas("sprites/PeaShooter/spritesheet.png", {
 
 const GAME_WIDTH = 1024
 const GAME_HEIGHT = 1024
+const LANE_COUNT = 5
 const LANE_WIDTH = 650
 const LANE_HEIGHT = 80
 const MARGIN = 16
-const PLANT_SLOTS = 8
+const PLANT_TILES = 8
+const TILE_WIDTH = LANE_WIDTH / PLANT_TILES
 
 // Add background
 add([
@@ -75,15 +77,39 @@ const lane5 = add([
 	pos(100, 150 + (4 * LANE_HEIGHT)),
 ])
 
-// Lawn Mower
-add([
-	pos(lane1.pos.x - 100, lane1.pos.y),
-	sprite('lawnMowerIdle')
-])
+// Grass / Empty plant spots
 
-const spawnLawnMower = () => {
+
+for (let i = 1; i <= PLANT_TILES; i++) {
+	console.log(i)
+	add([
+		'grass',
+		pos(20 + (TILE_WIDTH * i), lane2.pos.y),
+		area(),
+		rect(LANE_WIDTH / 8, LANE_HEIGHT),
+		opacity(0),
+	])
+}
+
+const spawnGrass = () => {
+
 
 }
+
+// Lawn Mower
+const spawnLawnMower = (lane) => {
+	const lawnMower = add([
+		'lawnMower',
+		pos(lane.pos.x - 120, lane.pos.y),
+		sprite('lawnMowerIdle'),
+		area({ scale: 0.6 }),
+	])
+}
+spawnLawnMower(lane1)
+spawnLawnMower(lane2)
+spawnLawnMower(lane3)
+spawnLawnMower(lane4)
+spawnLawnMower(lane5)
 
 // Zombie
 const spawnZombie = (lane) => {
@@ -92,9 +118,10 @@ const spawnZombie = (lane) => {
 		health(5),
 		pos(LANE_WIDTH, lane.pos.y - 20),
 		sprite("zombie"),
-		move(LEFT, 12),
+		move(LEFT, 120),
+		// move(LEFT, 0),
 		area(),
-		z(1),
+		z(2),
 		offscreen({ destroy: true }),
 	])
 	// triggers when hp reaches 0
@@ -111,8 +138,10 @@ const spawnZombie = (lane) => {
 // Pea Shooter
 const spawnPeaShooter = (lane) => {
 	const peaShooter = add([
+		'plant',
 		'peaShooter',
 		pos(lane.pos.x, lane.pos.y),
+		health(5),
 		scale(1.1),
 		sprite("pea"),
 		area(),
@@ -143,10 +172,19 @@ const shootPea = (peaShooter) => {
 	])
 }
 
+// Collision logic
+onCollideUpdate('zombie', 'plant', (zombie, plant) => {
+	zombie.move(0)
+})
+
 onCollideUpdate('zombie', 'pea', (zombie, pea) => {
 	zombie.hurt(1)
 	destroy(pea)
-	console.log("hit")
+})
+
+onCollide('zombie', 'lawnMower', (zombie, lawnMower) => {
+	zombie.hurt(5)
+	lawnMower.move(vec2(1, 0), 100)
 })
 
 // Game loop
@@ -187,4 +225,9 @@ wait(3, () => {
 })
 
 
+
+// click on any "chest" to open
+onClick("grass", (grass) => {
+	spawnPeaShooter(grass)
+})
 spawnPeaShooter(lane1)
