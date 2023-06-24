@@ -5,33 +5,38 @@ import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRef, useState } from 'react'
+import Router from 'next/router'
 
 export default function Home() {
   const cardNumberInput = useRef(null);
   const passwordInput = useRef(null);
-  const [text, setText] = useState("pending")
 
   const token = useStore(useTokenStore, (state) => state.token)
+  const setToken = useStore(useTokenStore, (state) => state.setToken)
 
   // Mutations
   const mutation = useMutation({
     mutationFn: postLogin,
-    onSuccess: () => {
-      alert("success")
+    onSuccess: (response) => {
+      const data = response.data
+      const token = data.token
+      setToken(token)
+      console.log(data)
+      // Router.push("/dashboard")
     },
   })
 
   const loginHandler = () => {
-    mutation.mutate({
-      id_card_number: cardNumberInput.value,
-      password: cardNumberInput.value,
-    })
-
+    const input = {
+      id_card_number: cardNumberInput.current.value,
+      password: passwordInput.current.value
+    }
+    mutation.mutate(input)
   }
 
   return (
     <>
-      <p>{text}</p>
+      <p>{token}</p>
       <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
         <div className="container">
           <Link className="navbar-brand" href="#">
