@@ -1,4 +1,4 @@
-import useStore from '@/hooks/useStore';
+
 import { useTokenStore } from '@/stores/tokenStore';
 import { postLogin } from '@/utils/query';
 import { useMutation } from '@tanstack/react-query';
@@ -8,30 +8,6 @@ import { useRef, useState } from 'react'
 import Router from 'next/router'
 
 export default function Home() {
-  const cardNumberInput = useRef(null);
-  const passwordInput = useRef(null);
-
-  const store = useStore(useTokenStore, (state) => state)
-
-
-  // Mutations
-  const mutation = useMutation({
-    mutationFn: postLogin,
-    onSuccess: (response) => {
-      const token = response.data.token
-      store.setToken(token)
-      Router.push("/dashboard")
-    },
-  })
-
-  const loginHandler = () => {
-    const input = {
-      id_card_number: cardNumberInput.current.value,
-      password: passwordInput.current.value
-    }
-    mutation.mutate(input)
-  }
-
   return (
     <>
       <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
@@ -92,7 +68,7 @@ export default function Home() {
                   <div className="form-group row align-items-center mt-4">
                     <div className="col-4" />
                     <div className="col-8">
-                      <button onClick={loginHandler} className="btn btn-primary">Login</button>
+                      <Link href="/dashboard" className="btn btn-primary">Login</Link>
                     </div>
                   </div>
                 </div>
