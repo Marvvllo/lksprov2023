@@ -1,25 +1,37 @@
 import useStore from '@/hooks/useStore';
 import { useTokenStore } from '@/stores/tokenStore';
 import { postLogin } from '@/utils/query';
+import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 export default function Home() {
   const cardNumberInput = useRef(null);
   const passwordInput = useRef(null);
+  const [text, setText] = useState("pending")
 
   const token = useStore(useTokenStore, (state) => state.token)
 
+  // Mutations
+  const mutation = useMutation({
+    mutationFn: postLogin,
+    onSuccess: () => {
+      alert("success")
+    },
+  })
+
   const loginHandler = () => {
-    const { data, status } = useQuery([], {
-      queryFn: postLogin,
-    });
+    mutation.mutate({
+      id_card_number: cardNumberInput.value,
+      password: cardNumberInput.value,
+    })
+
   }
 
   return (
     <>
-      <p>{token}</p>
+      <p>{text}</p>
       <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
         <div className="container">
           <Link className="navbar-brand" href="#">
@@ -58,7 +70,7 @@ export default function Home() {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-md-6">
-              <form className="card card-default">
+              <div className="card card-default">
                 <div className="card-header">
                   <h4 className="mb-0">Login</h4>
                 </div>
@@ -78,11 +90,11 @@ export default function Home() {
                   <div className="form-group row align-items-center mt-4">
                     <div className="col-4" />
                     <div className="col-8">
-                      <button onClick={() => loginHandler()} className="btn btn-primary">Login</button>
+                      <button onClick={loginHandler} className="btn btn-primary">Login</button>
                     </div>
                   </div>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
