@@ -56,13 +56,13 @@ export default function Home() {
                   <div className="form-group row align-items-center">
                     <div className="col-4 text-right">ID Card Number</div>
                     <div className="col-8">
-                      <input ref={cardNumberInput} type="text" className="form-control" />
+                      <input type="text" className="form-control" />
                     </div>
                   </div>
                   <div className="form-group row align-items-center">
                     <div className="col-4 text-right">Password</div>
                     <div className="col-8">
-                      <input ref={passwordInput} type="password" className="form-control" />
+                      <input type="password" className="form-control" />
                     </div>
                   </div>
                   <div className="form-group row align-items-center mt-4">
