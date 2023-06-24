@@ -1,3 +1,6 @@
+import useStore from '@/hooks/useStore';
+import { useTokenStore } from '@/stores/tokenStore';
+import { postLogin } from '@/utils/query';
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRef } from 'react'
@@ -6,8 +9,17 @@ export default function Home() {
   const cardNumberInput = useRef(null);
   const passwordInput = useRef(null);
 
+  const token = useStore(useTokenStore, (state) => state.token)
+
+  const loginHandler = () => {
+    const { data, status } = useQuery([], {
+      queryFn: postLogin,
+    });
+  }
+
   return (
     <>
+      <p>{token}</p>
       <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
         <div className="container">
           <Link className="navbar-brand" href="#">
@@ -66,7 +78,7 @@ export default function Home() {
                   <div className="form-group row align-items-center mt-4">
                     <div className="col-4" />
                     <div className="col-8">
-                      <button className="btn btn-primary">Login</button>
+                      <button onClick={() => loginHandler()} className="btn btn-primary">Login</button>
                     </div>
                   </div>
                 </div>
