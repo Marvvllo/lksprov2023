@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\VacancyController;
+use App\Http\Controllers\ValidationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,8 +27,14 @@ Route::prefix('/v1/auth')->controller(AuthController::class)->group(function () 
     Route::post('logout', 'logout');
 });
 
-// Auth group
-Route::prefix('/v1/auth')->controller(AuthController::class)->group(function () {
-    Route::post('login', 'login');
-    Route::post('logout', 'logout');
+// Validation group
+Route::prefix('/v1/validations')->controller(ValidationController::class)->group(function () {
+    Route::get('/', 'getValidation');
+    Route::post('/', 'requestValidation');
+});
+
+// Validation group
+Route::prefix('/v1/job_vacancies')->controller(VacancyController::class)->group(function () {
+    Route::get('/', 'getValidation');
+    Route::post('/', 'requestValidation');
 });
