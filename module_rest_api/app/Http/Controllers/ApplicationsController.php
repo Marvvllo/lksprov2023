@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JobVacancies;
 use App\Models\Societies;
 use App\Models\Validations;
 use Illuminate\Http\Request;
 
 use function PHPUnit\Framework\isEmpty;
-use function PHPUnit\Framework\isNull;
 
 function checkToken($token)
 {
@@ -17,10 +15,9 @@ function checkToken($token)
 }
 
 
-class VacancyController extends Controller
+class ApplicationsController extends Controller
 {
-    // GET Validation
-    public function getValidation(Request $request)
+    public function postApplication(Request $request)
     {
         // Validasi token
         $token = $request->query('token');
@@ -32,15 +29,20 @@ class VacancyController extends Controller
             ], 401);
         }
 
+        // Periksa status data validasi
         $validation = Validations::where('society_id', $society->id)->first();
-        if ($validation == null) {
+        if ($validation == null || $validation->status !== "accepted") {
             return response([
-                'message' => 'Please register a job data validation'
+                'message' => 'Your data validator must be accepted by validator before'
             ], 404);
         }
 
-        return response([
-            'vacancies' => JobVacancies::all()
-        ], 200);
+        //         vacancy_id: 1, positions: [position 1, ...], 
+        //   notes : “SomeText” 
+
+        // Periksa field input
+        $vacancyID = $request->input('vacancy_id');
+        $positions = $request->input('positions');
+        $notes = $request->input('notes');
     }
 }
