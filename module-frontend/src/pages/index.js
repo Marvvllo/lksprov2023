@@ -11,18 +11,16 @@ export default function Home() {
   const cardNumberInput = useRef(null);
   const passwordInput = useRef(null);
 
-  const token = useStore(useTokenStore, (state) => state.token)
-  const setToken = useStore(useTokenStore, (state) => state.setToken)
+  const store = useStore(useTokenStore, (state) => state)
+
 
   // Mutations
   const mutation = useMutation({
     mutationFn: postLogin,
     onSuccess: (response) => {
-      const data = response.data
-      const token = data.token
-      setToken(token)
-      console.log(data)
-      // Router.push("/dashboard")
+      const token = response.data.token
+      store.setToken(token)
+      Router.push("/dashboard")
     },
   })
 
@@ -36,7 +34,6 @@ export default function Home() {
 
   return (
     <>
-      <p>{token}</p>
       <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
         <div className="container">
           <Link className="navbar-brand" href="#">
