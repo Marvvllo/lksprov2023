@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 const Dashboard = () => {
-  const store = useStore(useTokenStore, (state) => state);
   return (
     <>
       <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
