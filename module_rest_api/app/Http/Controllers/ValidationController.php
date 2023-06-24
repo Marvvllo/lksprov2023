@@ -79,7 +79,7 @@ class ValidationController extends Controller
         if ($validation == null) {
             return response([
                 'message' => 'Please register a job data validation'
-            ], 404);
+            ], 401);
         }
 
         return response([
